@@ -3,15 +3,34 @@ package com.brenomaia.cusromc.resources;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.brenomaia.cusromc.domain.Categoria;
+import com.brenomaia.cusromc.services.CategoriaService;
 
 @RestController
 @RequestMapping(value = "/categorias")
 public class CategoriaResource {
+	
+	@Autowired
+	private CategoriaService categoriaService;
+	
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ResponseEntity<?> findByID(@PathVariable Integer id){
+		
+		Categoria findByID = categoriaService.findByID(id);
+		
+		return ResponseEntity.ok().body(findByID);
+	}
+	
+	
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public List<Categoria> list() {
