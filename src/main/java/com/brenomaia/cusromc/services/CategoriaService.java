@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.brenomaia.cusromc.domain.Categoria;
 import com.brenomaia.cusromc.repositories.CategoriaRepository;
+import com.brenomaia.cusromc.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class CategoriaService {
@@ -16,7 +17,7 @@ public class CategoriaService {
 	
 	public Categoria findByID(Integer id) {
 		Optional<Categoria> findById = categoriaDAO.findById(id);
-		return findById.orElse(null);
+		return findById.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
 		
 	}
 

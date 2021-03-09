@@ -9,4 +9,4 @@ import com.brenomaia.cusromc.domain.Produto;
 public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
 
 }
- 
+  
