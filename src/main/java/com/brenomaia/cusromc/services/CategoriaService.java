@@ -17,7 +17,7 @@ public class CategoriaService {
 	
 	public Categoria findByID(Integer id) {
 		Optional<Categoria> findById = categoriaDAO.findById(id);
-		return findById.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
+		return findById.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName())); 
 		
 	}
 
