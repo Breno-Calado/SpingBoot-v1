@@ -5,8 +5,6 @@ import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
-import org.springframework.context.annotation.EnableMBeanExport;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
