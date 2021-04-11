@@ -20,5 +20,10 @@ public class CategoriaService {
 		return findById.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName())); 
 		
 	}
+	
+	public Categoria create(Categoria categoriaObj) {
+		categoriaObj.setId(null);
+		return categoriaDAO.save(categoriaObj);
+	}
 
 }
