@@ -39,6 +39,14 @@ public class CategoriaResource {
 		
 	}
 	
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> edit(@RequestBody Categoria categoriaObj, @PathVariable Integer id){
+		categoriaObj.setId(id);
+		categoriaService.update(categoriaObj);
+		return ResponseEntity.noContent().build();
+	}
+	
 //	@RequestMapping(method = RequestMethod.GET)
 //	public List<Categoria> list() {
 //		
