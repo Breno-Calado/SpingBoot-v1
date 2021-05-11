@@ -6,6 +6,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.brenomaia.cusromc.domain.Categoria;
@@ -54,4 +57,9 @@ public class CategoriaService {
 		return catDTO;
 	}
 
+	
+	public Page<Categoria> findPage(Integer page, Integer linesPage, String orderBy, String direction){
+		PageRequest pageRequest = PageRequest.of(page, linesPage, Direction.valueOf(direction) , orderBy);
+		return categoriaDAO.findAll(pageRequest);
+	}
 }
