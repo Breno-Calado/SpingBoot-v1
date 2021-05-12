@@ -62,4 +62,8 @@ public class CategoriaService {
 		PageRequest pageRequest = PageRequest.of(page, linesPage, Direction.valueOf(direction) , orderBy);
 		return categoriaDAO.findAll(pageRequest);
 	}
+	
+	public Categoria fromDTO(CategoriaDTO categoriaDTO) {
+		return new Categoria(categoriaDTO.getId(), categoriaDTO.getName());
+	}
 }

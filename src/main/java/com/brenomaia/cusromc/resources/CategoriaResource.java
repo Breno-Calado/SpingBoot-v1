@@ -3,6 +3,8 @@ package com.brenomaia.cusromc.resources;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +36,9 @@ public class CategoriaResource {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> create(@RequestBody Categoria categoriaObj) {
+	public ResponseEntity<Void> create(@Valid @RequestBody CategoriaDTO categoriaObjDTO) {
+		Categoria categoriaObj = categoriaService.fromDTO(categoriaObjDTO);
+		
 		Categoria categoriaCreate = categoriaService.create(categoriaObj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(categoriaCreate.getId())
 				.toUri();
@@ -43,7 +47,9 @@ public class CategoriaResource {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> edit(@RequestBody Categoria categoriaObj, @PathVariable Integer id) {
+	public ResponseEntity<Void> edit(@Valid @RequestBody CategoriaDTO categoriaObjDTO, @PathVariable Integer id) {
+		Categoria categoriaObj = categoriaService.fromDTO(categoriaObjDTO);
+		
 		categoriaObj.setId(id);
 		categoriaService.update(categoriaObj);
 		return ResponseEntity.noContent().build();
@@ -73,6 +79,8 @@ public class CategoriaResource {
 		Page<CategoriaDTO> listDTO = categorias.map(cat -> new CategoriaDTO(cat));
 		return ResponseEntity.ok().body(listDTO);
 	}
+	
+	
 
 //	@RequestMapping(method = RequestMethod.GET)
 //	public List<Categoria> list() {
