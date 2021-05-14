@@ -38,7 +38,7 @@ public class CategoriaResource {
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> create(@Valid @RequestBody CategoriaDTO categoriaObjDTO) {
 		Categoria categoriaObj = categoriaService.fromDTO(categoriaObjDTO);
-		
+
 		Categoria categoriaCreate = categoriaService.create(categoriaObj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(categoriaCreate.getId())
 				.toUri();
@@ -49,7 +49,7 @@ public class CategoriaResource {
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> edit(@Valid @RequestBody CategoriaDTO categoriaObjDTO, @PathVariable Integer id) {
 		Categoria categoriaObj = categoriaService.fromDTO(categoriaObjDTO);
-		
+
 		categoriaObj.setId(id);
 		categoriaService.update(categoriaObj);
 		return ResponseEntity.noContent().build();
@@ -67,20 +67,17 @@ public class CategoriaResource {
 		List<CategoriaDTO> categorias = categoriaService.findAll();
 		return ResponseEntity.ok().body(categorias);
 	}
-	
-	@RequestMapping(value = "/page" , method = RequestMethod.GET)
-	public ResponseEntity<Page<CategoriaDTO>> findPage(
-			@RequestParam(value = "page" , defaultValue = "0") Integer page, 
-			@RequestParam(value = "linesPerPage" , defaultValue = "24") Integer linesPerPage, 
-			@RequestParam(value = "orderBy" , defaultValue = "name") String orderBy, 
-			@RequestParam(value = "direction" , defaultValue = "ASC") String direction) {
+
+	@RequestMapping(value = "/page", method = RequestMethod.GET)
+	public ResponseEntity<Page<CategoriaDTO>> findPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
+			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
+			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy,
+			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 		Page<Categoria> categorias = categoriaService.findPage(page, linesPerPage, orderBy, direction);
-		
+
 		Page<CategoriaDTO> listDTO = categorias.map(cat -> new CategoriaDTO(cat));
 		return ResponseEntity.ok().body(listDTO);
 	}
-	
-	
 
 //	@RequestMapping(method = RequestMethod.GET)
 //	public List<Categoria> list() {
