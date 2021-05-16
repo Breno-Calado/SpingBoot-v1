@@ -36,10 +36,11 @@ public class CategoriaService {
 	}
 
 	public Categoria update(Categoria categoriaObj) {
-		findByID(categoriaObj.getId());
-		return categoriaDAO.save(categoriaObj);
+		Categoria catDB = findByID(categoriaObj.getId());
+		updataDados(catDB, categoriaObj );
+		return categoriaDAO.save(catDB);
 	}
-
+	
 	public void delete(Integer id) {
 
 		try {
@@ -65,5 +66,10 @@ public class CategoriaService {
 	
 	public Categoria fromDTO(CategoriaDTO categoriaDTO) {
 		return new Categoria(categoriaDTO.getId(), categoriaDTO.getName());
+	}
+	
+	public void updataDados(Categoria categoria, Categoria categoriaObj) {
+		categoria.setName(categoriaObj.getName());
+		
 	}
 }

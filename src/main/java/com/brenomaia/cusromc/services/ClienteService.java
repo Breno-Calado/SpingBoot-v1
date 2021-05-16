@@ -45,11 +45,6 @@ public class ClienteService {
 		return clienteDAO.save(cliente);
 	}
 
-	private void updateDados(Cliente cliente, Cliente clienteObj) {
-		cliente.setName(clienteObj.getName());
-		cliente.setEmail(clienteObj.getEmail());
-	}
-
 
 	public void delete(Integer id) {
 
@@ -79,5 +74,9 @@ public class ClienteService {
 		return new Cliente(clienteDTO.getId(), clienteDTO.getName(), clienteDTO.getEmail(), null, null);
 	}
 	
+	private void updateDados(Cliente cliente, Cliente clienteObj) {
+		cliente.setName(clienteObj.getName());
+		cliente.setEmail(clienteObj.getEmail());
+	}
 	
 }
