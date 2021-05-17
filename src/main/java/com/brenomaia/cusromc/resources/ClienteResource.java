@@ -3,6 +3,7 @@
  */
 package com.brenomaia.cusromc.resources;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -16,9 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.brenomaia.cusromc.domain.Categoria;
 import com.brenomaia.cusromc.domain.Cliente;
+import com.brenomaia.cusromc.dto.CategoriaDTO;
 import com.brenomaia.cusromc.dto.ClienteDTO;
+import com.brenomaia.cusromc.dto.ClienteNewDTO;
 import com.brenomaia.cusromc.services.ClienteService;
 
 /**
@@ -39,6 +44,17 @@ public class ClienteResource {
 		return ResponseEntity.ok().body(findById);
 	}
 	
+	
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Void> create(@Valid @RequestBody ClienteNewDTO clienteNewObjDTO) {
+		Cliente clienteObj = clienteService.fromDTO(clienteNewObjDTO);
+
+		Cliente categoriaCreate = clienteService.create(clienteObj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(categoriaCreate.getId())
+				.toUri();
+		return ResponseEntity.created(uri).build();
+
+	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> edit(@Valid @RequestBody ClienteDTO categoriaObjDTO, @PathVariable Integer id) {

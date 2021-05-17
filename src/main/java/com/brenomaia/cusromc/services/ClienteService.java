@@ -15,10 +15,15 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.brenomaia.cusromc.domain.Categoria;
+import com.brenomaia.cusromc.domain.Cidade;
 import com.brenomaia.cusromc.domain.Cliente;
+import com.brenomaia.cusromc.domain.Endereco;
+import com.brenomaia.cusromc.domain.enums.TipoCliente;
 import com.brenomaia.cusromc.dto.CategoriaDTO;
 import com.brenomaia.cusromc.dto.ClienteDTO;
+import com.brenomaia.cusromc.dto.ClienteNewDTO;
 import com.brenomaia.cusromc.repositories.ClienteRepository;
+import com.brenomaia.cusromc.repositories.EnderecoRepository;
 import com.brenomaia.cusromc.services.exceptions.DataIntegrityException;
 import com.brenomaia.cusromc.services.exceptions.ObjectNotFoundException;
 
@@ -33,6 +38,9 @@ public class ClienteService {
 	@Autowired
 	private ClienteRepository clienteDAO;
 	
+	@Autowired
+	private EnderecoRepository enderecoDAO;
+	
 	public Cliente findById(Integer id) {
 		Optional<Cliente> findById = clienteDAO.findById(id);
 		return findById.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
@@ -45,6 +53,13 @@ public class ClienteService {
 		return clienteDAO.save(cliente);
 	}
 
+	public Cliente create(Cliente clienteObj) {
+		clienteObj.setId(null);
+		clienteDAO.save(clienteObj);
+		enderecoDAO.saveAll(clienteObj.getEnderecos());
+		
+		return clienteObj;
+	}
 
 	public void delete(Integer id) {
 
@@ -79,4 +94,23 @@ public class ClienteService {
 		cliente.setEmail(clienteObj.getEmail());
 	}
 	
+	public Cliente fromDTO(ClienteNewDTO clienteNewObjDTO) {
+		 Cliente cliente = new Cliente(null, clienteNewObjDTO.getName(), clienteNewObjDTO.getEmail(), clienteNewObjDTO.getCpfOuCnpj(), TipoCliente.toEnum(clienteNewObjDTO.getTipo()));
+		 Cidade cidade = new Cidade(clienteNewObjDTO.getCidadeId(), null, null);
+		 Endereco endereco = new Endereco(null, clienteNewObjDTO.getLogradouro(), clienteNewObjDTO.getNumero(), clienteNewObjDTO.getComplemento(), clienteNewObjDTO.getBairro(), clienteNewObjDTO.getCep(), cliente, cidade);
+		 
+		 cliente.getEnderecos().add(endereco);
+		 cliente.getTelefones().add(clienteNewObjDTO.getTelefone01());
+		 
+		 if(clienteNewObjDTO.getTelefone02() != null) {
+			 cliente.getTelefones().add(clienteNewObjDTO.getTelefone02());
+
+		 }
+		 if(clienteNewObjDTO.getTelefone03() != null) {
+			 cliente.getTelefones().add(clienteNewObjDTO.getTelefone03());
+
+		 }
+		 
+		 return cliente;
+	}
 }
