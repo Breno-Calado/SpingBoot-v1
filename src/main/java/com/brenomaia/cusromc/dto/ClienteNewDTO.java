@@ -2,22 +2,48 @@ package com.brenomaia.cusromc.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.brenomaia.cusromc.services.validation.ClienteInsert;
+
+@ClienteInsert
 public class ClienteNewDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	@NotEmpty(message ="Preenchimento obrigatório" )
+	@Length(max = 80, min = 5, message = "O tamanho deve ter entre 5 e 80 caracteres")
 	private String name; 
+	
+	@NotNull
+	@Email
 	private String email;
+	
+	@NotNull
 	private String cpfOuCnpj;
 	private Integer tipo;
 	
+	@NotNull
 	private String logradouro;
+	
+	@NotNull
 	private String numero;
+	
 	private String complemento;
+	
 	private String bairro;
+	
+	@NotNull
 	private String cep;
 	
+	@NotNull
 	private String telefone01;
+	
 	private String telefone02;
+	
 	private String telefone03;
 	
 	
