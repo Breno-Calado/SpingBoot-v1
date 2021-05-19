@@ -6,13 +6,20 @@ import java.util.List;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.brenomaia.cusromc.domain.Cliente;
 import com.brenomaia.cusromc.domain.enums.TipoCliente;
 import com.brenomaia.cusromc.dto.ClienteNewDTO;
+import com.brenomaia.cusromc.repositories.ClienteRepository;
 import com.brenomaia.cusromc.resources.exceptions.FieldMessage;
 import com.brenomaia.cusromc.services.validation.utils.BR;
 
 public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert, ClienteNewDTO> {
-
+	
+	@Autowired
+	private ClienteRepository repo; 
+	
 	@Override
 	public void initialize(ClienteInsert ann) {
 	}
@@ -29,6 +36,12 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
 		if(objDto.getTipo().equals(TipoCliente.PESSOAJURIDICA.getCod()) && !BR.isValidCNPJ(objDto.getCpfOuCnpj())) {
 			list.add(new FieldMessage("CpfOuCnpj", "CNPJ inválido"));
 		}
+		
+		Cliente findByEmail = repo.findByEmail(objDto.getEmail());
+		if(findByEmail != null) {
+			list.add(new FieldMessage("email", "Email já existente"));
+		}
+		
 		
 		// inclua os testes aqui, inserindo erros na lista
 		for (FieldMessage e : list) {
